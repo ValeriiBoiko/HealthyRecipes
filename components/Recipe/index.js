@@ -1,23 +1,17 @@
-// {
-//   "id": 716429,
-//   "calories": 584,
-//   "carbs": "84g",
-//   "fat": "20g",
-//   "image": "https://spoonacular.com/recipeImages/716429-312x231.jpg",
-//   "protein": "19g",
-//   "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs"
-// }
 import React from 'react';
+import { useTheme } from '@react-navigation/native';
 import { Image, Text, TouchableWithoutFeedback, View } from 'react-native';
-import { Colors, Font } from '../../constants/Design';
-import { commonStyles } from '../../style';
+import { wp } from '../../utils';
+import { Font } from '../../constants/Design';
 
 function Recipe({ id, calories, image, title, ...props }) {
+  const { colors } = useTheme();
+
   return (
     <View style={props.style}>
       <TouchableWithoutFeedback onPress={props.onPress}>
         <View style={{
-          backgroundColor: Colors.card,
+          backgroundColor: colors.card,
           flex: 1,
           padding: 8,
           borderRadius: 8,
@@ -27,11 +21,14 @@ function Recipe({ id, calories, image, title, ...props }) {
             width: '100%',
             aspectRatio: 1,
             marginBottom: 10,
-            // borderTopRightRadius: 8,
-            // borderTopLeftRadius: 8,
           }} />
 
-          <Text numberOfLines={2} style={commonStyles.regularText}>{title}</Text>
+          <Text numberOfLines={2} style={{
+            fontSize: wp(16),
+            lineHeight: wp(20),
+            color: colors.text,
+            fontFamily: Font.regular
+          }}>{title}</Text>
         </View>
       </TouchableWithoutFeedback>
     </View>

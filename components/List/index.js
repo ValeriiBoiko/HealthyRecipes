@@ -1,9 +1,13 @@
-import React from 'react';
+import { useTheme } from '@react-navigation/native';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Colors, Font } from '../../constants/Design';
-import { commonStyles } from '../../style';
+import { Font } from '../../constants/Design';
+import { wp } from '../../utils';
 
 function List({ items, type, itemStyle, ...props }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors])
+
   const listItems = items.map((item, index) => (
     <View key={index}>
       <View key={index} style={[itemStyle, styles.item]}>
@@ -12,7 +16,9 @@ function List({ items, type, itemStyle, ...props }) {
         </Text>
         <Text style={styles.itemText}>{item}</Text>
       </View>
-      {index < items.length - 1 && <View style={styles.delimiter} />}
+      {index < items.length - 1 && <View style={[styles.delimiter, {
+        backgroundColor: colors.border,
+      }]} />}
     </View>
   ))
 
@@ -23,25 +29,27 @@ function List({ items, type, itemStyle, ...props }) {
   )
 }
 
-const styles = StyleSheet.create({
+const getStyles = (colors) => StyleSheet.create({
   item: {
     flexDirection: 'row',
     paddingVertical: 12
   },
   itemSymbol: {
-    ...commonStyles.regularText,
+    color: colors.text,
     fontFamily: Font.bold,
-    fontSize: 16,
+    fontSize: wp(16),
+    lineHeight: wp(20),
     width: 36,
   },
   itemText: {
-    ...commonStyles.regularText,
-    fontSize: 16,
+    color: colors.text,
+    fontFamily: Font.regular,
+    fontSize: wp(16),
+    lineHeight: wp(20),
     flex: 1,
   },
   delimiter: {
     height: 1,
-    backgroundColor: Colors.border,
     marginLeft: 36,
   }
 })

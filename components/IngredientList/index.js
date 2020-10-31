@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import { useTheme } from '@react-navigation/native';
+import React from 'react';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Colors, Font } from '../../constants/Design';
+import { Font } from '../../constants/Design';
 import Icon from '../Icon';
 
 function IngredientList(props) {
+  const { colors } = useTheme();
   const [selectedItems, setSelectedItems] = useState({});
 
   function onPressIngredient(id, title) {
@@ -23,13 +25,16 @@ function IngredientList(props) {
     icon = selectedItems[item.id] ? (
       <View style={[styles.button, {
         backgroundColor: 'transparent',
-        borderColor: Colors.error
+        borderColor: colors.error
       }]}>
-        <Icon name={'minus'} size={25} color={Colors.error} />
+        <Icon name={'minus'} size={25} color={colors.error} />
       </View>
     ) : (
-        <View style={styles.button}>
-          <Icon name={'plus'} size={25} color={Colors.text} />
+        <View style={[styles.button, {
+          backgroundColor: colors.primary,
+          borderColor: colors.primary
+        }]}>
+          <Icon name={'plus'} size={25} color={'#f2f1f6'} />
         </View>
       );
 
@@ -43,8 +48,8 @@ function IngredientList(props) {
         }}>
           {icon}
           <Text style={{
-            color: Colors.secondary,
-            color: Colors.text,
+            color: colors.secondary,
+            color: colors.text,
             fontFamily: Font.bold,
             fontFamily: Font.regular,
             fontSize: 16,
@@ -67,12 +72,10 @@ const styles = StyleSheet.create({
   button: {
     width: 35,
     height: 35,
-    backgroundColor: Colors.primary,
     borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: Colors.primary,
     marginVertical: 8,
     marginRight: 16
   }

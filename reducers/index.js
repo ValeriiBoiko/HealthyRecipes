@@ -1,10 +1,12 @@
 import Action from "../constants/Action";
+import { LightTheme } from "../constants/Design";
 
 const initialState = {
   recipes: [],
   favorites: [],
   cart: [],
-  recipe: {}
+  recipe: {},
+  theme: LightTheme
 }
 
 export default function (state = initialState, action) {
@@ -24,11 +26,12 @@ export default function (state = initialState, action) {
         ...state,
         favorites: action.payload
       }
-    case Action.UPDATE_CART:
+    case Action.SET_THEME:
       return {
         ...state,
-        cart: action.payload
+        theme: action.payload
       }
+
   }
 
   return state;

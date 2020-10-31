@@ -1,60 +1,74 @@
-import React from 'react';
+import { useTheme } from '@react-navigation/native';
+import React, { useMemo } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Font } from '../constants/Design';
-import { commonStyles } from '../style';
+import { wp } from '../utils';
 
 function RecipesCategories(props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors])
+
   return (
     <SafeAreaView>
-      <ScrollView style={{
-        paddingHorizontal: 16
-      }}>
-        <Text style={commonStyles.h1}>Recipe categories</Text>
-        <Text style={commonStyles.primaryText}>
+      <ScrollView style={{ paddingHorizontal: wp(20) }}>
+        <Text style={styles.screenTitle}>Recipe categories</Text>
+        <Text style={styles.primaryText}>
           Browse through our various recipes
         </Text>
 
         <Pressable onPress={() => { props.navigation.navigate('Recipes') }}>
           <View style={styles.category}>
             <Image source={require('../assets/images/all-recipes.jpg')} style={styles.categoryImage} />
-            <View style={styles.categoryCaption}>
-              <Text style={{
-                ...commonStyles.primaryText,
-                fontFamily: Font.bold,
-              }}>Food book</Text>
-              <Text style={commonStyles.h1}>All Recipes</Text>
+            <View style={[styles.categoryCaption, {
+              backgroundColor: colors.backgroundWithOpacity(0.85),
+            }]}>
+              <Text style={styles.primaryText}>Food book</Text>
+              <Text style={styles.categoryTitle}>All Recipes</Text>
             </View>
           </View>
         </Pressable>
 
-        <View style={styles.category}>
-          <Image source={require('../assets/images/vegan.jpg')} style={styles.categoryImage} />
-          <View style={styles.categoryCaption}>
-            <Text style={{
-              ...commonStyles.primaryText,
-              fontFamily: Font.bold,
-            }}>Food book</Text>
-            <Text style={commonStyles.h1}>Vegetarian Food</Text>
+        <Pressable onPress={() => { props.navigation.navigate('Recipes') }}>
+          <View style={styles.category}>
+            <Image source={require('../assets/images/vegan.jpg')} style={styles.categoryImage} />
+            <View style={[styles.categoryCaption, {
+              backgroundColor: colors.backgroundWithOpacity(0.85),
+            }]}>
+              <Text style={styles.primaryText}>Food book</Text>
+              <Text style={styles.categoryTitle}>All Recipes</Text>
+            </View>
           </View>
-        </View>
+        </Pressable>
 
-        <View style={styles.category}>
-          <Image source={require('../assets/images/vegetables.jpg')} style={styles.categoryImage} />
-          <View style={styles.categoryCaption}>
-            <Text style={{
-              ...commonStyles.primaryText,
-              fontFamily: Font.bold,
-            }}>Food book</Text>
-            <Text style={commonStyles.h1}>Vegan Diet</Text>
+        <Pressable onPress={() => { props.navigation.navigate('Recipes') }}>
+          <View style={styles.category}>
+            <Image source={require('../assets/images/vegetables.jpg')} style={styles.categoryImage} />
+            <View style={[styles.categoryCaption, {
+              backgroundColor: colors.backgroundWithOpacity(0.85),
+            }]}>
+              <Text style={styles.primaryText}>Food book</Text>
+              <Text style={styles.categoryTitle}>All Recipes</Text>
+            </View>
           </View>
-        </View>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   )
 }
 
-const styles = StyleSheet.create({
+const getStyles = (colors) => StyleSheet.create({
+  screenTitle: {
+    fontFamily: Font.bold,
+    fontSize: wp(24),
+    lineHeight: wp(30),
+  },
+  primaryText: {
+    fontFamily: Font.bold,
+    fontSize: wp(16),
+    lineHeight: wp(20),
+    color: colors.primary,
+  },
   category: {
     borderRadius: 16,
     overflow: 'hidden',
@@ -68,11 +82,15 @@ const styles = StyleSheet.create({
   categoryCaption: {
     position: 'absolute',
     bottom: 0,
-    paddingHorizontal: 16,
+    paddingHorizontal: wp(16),
     paddingVertical: 10,
-    backgroundColor: 'rgba(0,0,0,.85)',
     width: '100%'
-  }
+  },
+  categoryTitle: {
+    fontFamily: Font.bold,
+    fontSize: wp(21),
+    lineHeight: wp(28),
+  },
 });
 
 export default RecipesCategories;

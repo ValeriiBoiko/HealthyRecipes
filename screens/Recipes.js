@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import Recipe from '../components/Recipe';
 import { updateRecipes } from '../middleware';
+import { wp } from '../utils';
 
 function Recipes(props) {
   const recipes = props.recipes.map((recipe) => (
@@ -37,7 +38,7 @@ function Recipes(props) {
 
 const styles = StyleSheet.create({
   scrollView: {
-    paddingHorizontal: 13
+    paddingHorizontal: wp(16)
   },
   containerStyle: {
     flexDirection: 'row',
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     flexShrink: 0,
     flexBasis: '50%',
-    padding: 4,
+    padding: wp(4),
   }
 });
 
