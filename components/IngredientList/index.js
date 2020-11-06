@@ -1,28 +1,37 @@
 import { useTheme } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
 import { Font } from '../../constants/Design';
+import { addToCart, removeFromCart } from '../../middleware';
 import Icon from '../Icon';
 
 function IngredientList(props) {
   const { colors } = useTheme();
-  const [selectedItems, setSelectedItems] = useState({});
+
+  const selectedItems = props.cart.map(item => item.id);
 
   function onPressIngredient(id, title) {
-    if (selectedItems[id]) {
-      const updated = { ...selectedItems };
-      delete updated[id];
-      setSelectedItems(updated);
+    const index = selectedItems.findIndex((item) => id === item);
+    const ingredient = { id, title };
+
+    if (index > -1) {
+      // const updated = selectedItems.filter(item => item !== id);
+      // setSelectedItems(updated);
+
+      props.removeFromCart(props.recipe, ingredient)
     } else {
-      const ingredient = { id, title };
-      setSelectedItems({ ...selectedItems, [id]: ingredient });
+      // setSelectedItems(selectedItems.concat([id]));
+      props.addToCart(props.recipe, ingredient)
     }
   }
 
   const ingredients = props.ingredients.map((item, index) => {
-    icon = selectedItems[item.id] ? (
+    const isAdded = selectedItems.findIndex((current) => current === item.id);
+
+    icon = isAdded > -1 ? (
       <View style={[styles.button, {
         backgroundColor: 'transparent',
         borderColor: colors.error
@@ -81,4 +90,13 @@ const styles = StyleSheet.create({
   }
 })
 
-export default IngredientList
+const mapStateToProps = (state) => ({
+  cart: state.cart[state.recipe.id] && state.cart[state.recipe.id].ingredients || []
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  addToCart: (recipe, ingredient) => dispatch(addToCart(recipe, ingredient)),
+  removeFromCart: (recipe, ingredient) => dispatch(removeFromCart(recipe, ingredient)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(IngredientList)

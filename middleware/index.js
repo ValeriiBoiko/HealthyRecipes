@@ -1,5 +1,5 @@
 import Action from "../constants/Action";
-import { getRecipes, getRecipe } from "../service";
+import { getRecipes, getRecipe, getInstructions, getSimilarRecipes } from "../service";
 
 export function updateRecipes(number = 0, offset = 0) {
   return (dispatch, getState) => {
@@ -28,41 +28,90 @@ export function setRecipe(id = -1) {
       payload: { state: 'LOADING' }
     })
 
-    getRecipe(id)
-      .then((recipe) => {
-        recipe.state = 'READY';
+    const recipe = getRecipe(id);
+    const instructions = getInstructions(id);
+    const similar = getSimilarRecipes(id);
+
+    Promise.all([recipe, instructions, similar])
+      .then((values) => {
         dispatch({
           type: Action.SET_RECIPE,
-          payload: recipe
+          payload: {
+            ...values[0],
+            instructions: values[1],
+            similarRecipes: values[2],
+            state: 'READY',
+          }
         })
       })
-      .catch((err) => console.log(err))
+      .catch(err => console.log(err))
   }
 }
 
-export function toggleFavorite(recipe) {
-  if (id === -1) return null;
-
+export function addToFavorite(recipe) {
   return (dispatch, getState) => {
     const favorites = getState().favorites;
 
-
-    // dispatch({
-    //   type: Action.SET_RECIPE,
-    //   payload: recipes.concat(result)
-    // })
+    dispatch({
+      type: Action.SET_FAVORITES,
+      payload: favorites.concat([recipe]),
+    })
   }
 }
 
-export function addToCart(recipeId, ingredientId) {
+export function removeFromFavorite(recipeId) {
   return (dispatch, getState) => {
-    const { recipes, cart } = getState();
-    const recipe = recipes.findIndex((item) => item.id === recipeId);
-    const ingredient = recipe.ingredients.findIndex((item) => item.id === ingredientId);
+    const favorites = getState().favorites.filter(favorite => (
+      favorite.id !== recipeId
+    ));
 
-    console.log(recipe);
-    console.log(ingredient);
-
+    dispatch({
+      type: Action.SET_FAVORITES,
+      payload: favorites,
+    })
   }
+}
 
+export function addToCart(recipe, ingredient) {
+  return (dispatch, getState) => {
+    const { cart } = getState();
+    const updatedCart = { ...cart };
+
+    if (!updatedCart[recipe.id]) {
+      updatedCart[recipe.id] = {
+        id: recipe.id,
+        image: recipe.image,
+        title: recipe.title,
+        ingredients: [ingredient]
+      }
+    } else {
+      updatedCart[recipe.id].ingredients = updatedCart[recipe.id].ingredients.concat([ingredient]);
+    }
+
+    dispatch({
+      type: Action.UPDATE_CART,
+      payload: updatedCart
+    })
+  }
+}
+
+export function removeFromCart(recipe, ingredient) {
+  return (dispatch, getState) => {
+    const { cart } = getState();
+    const updatedCart = { ...cart };
+    const cartRecipe = updatedCart[recipe.id];
+
+    cartRecipe.ingredients = cartRecipe.ingredients.filter((item) => (
+      item.id !== ingredient.id
+    ));
+
+    if (!cartRecipe.ingredients.length) {
+      delete updatedCart[recipe.id];
+    }
+
+    dispatch({
+      type: Action.UPDATE_CART,
+      payload: updatedCart
+    })
+  }
 }
