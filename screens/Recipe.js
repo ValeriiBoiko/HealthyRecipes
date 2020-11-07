@@ -8,15 +8,13 @@ import List from '../components/List';
 import { Font } from '../constants/Design';
 import { addToFavorite, removeFromFavorite, setRecipe } from '../middleware';
 import { wp } from '../utils';
-import RecipePreview from '../components/Recipe';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Loader from '../components/Loader/Loader';
 
 function Recipe({ recipe, favorites, ...props }) {
-  const { id, title, image, servings, readyInMinutes, sourceName, ingredients, aggregateLikes, instructions, similarRecipes } = recipe;
+  const { id, title, image, servings, readyInMinutes, sourceName, ingredients, aggregateLikes, instructions } = recipe;
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
-  const [readyToShow, setReadyToShow] = useState(false);
 
   const styles = useMemo(() => getStyles(colors, insets), [colors]);
   const isSaved = (favorites.findIndex((item) => item.id === id) > -1);
@@ -36,13 +34,10 @@ function Recipe({ recipe, favorites, ...props }) {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      setReadyToShow(true);
-    }, 1500)
     props.setRecipe(props.route.params.recipeId);
   }, []);
 
-  if (!recipe.state || recipe.state !== 'READY' || !readyToShow) {
+  if (!recipe.state || recipe.state !== 'READY') {
     return (
       <Loader
         label={'Recipe made with love...'}
@@ -56,19 +51,6 @@ function Recipe({ recipe, favorites, ...props }) {
       <Text style={styles.infoItemValue}>{item.value}</Text>
     </View>
   ));
-
-  const similarRecipesPreview = similarRecipes.map((recipe) => (
-    <View style={{
-      flex: 1,
-      paddingHorizontal: wp(4)
-    }} key={recipe.id}>
-      <RecipePreview {...recipe} onPress={() => {
-        props.navigation.push('Recipe', {
-          recipeId: recipe.id
-        })
-      }} fontSize={wp(13)} numberOfLines={3} />
-    </View>
-  ))
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -116,16 +98,7 @@ function Recipe({ recipe, favorites, ...props }) {
           delimiter={true}
         />
       </View>
-
-      <ScrollView horizontal={true} style={{
-        margin: wp(16)
-      }} contentContainerStyle={{
-        width: '100%',
-      }}>
-        {similarRecipesPreview}
-      </ScrollView>
     </ScrollView>
-
   )
 }
 

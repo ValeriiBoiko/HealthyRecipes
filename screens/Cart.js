@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import List from '../components/List';
 import { Font } from '../constants/Design';
@@ -12,23 +12,29 @@ function Cart(props) {
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.background, flex: 1 }}>
-      {
-        props.cart.map((recipe) => (
-          <View key={recipe.id} style={styles.card}>
-            <View style={styles.recipeHeader}>
-              <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
-              <Text style={styles.recipeTitle}>{recipe.title}</Text>
-            </View>
+      <ScrollView>
+        {
+          props.cart.map((recipe) => (
+            <View key={recipe.id} style={styles.card}>
+              <Pressable onPress={() => props.navigation.navigate('Recipe', {
+                recipeId: recipe.id
+              })}>
+                <View style={styles.recipeHeader}>
+                  <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
+                  <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                </View>
 
-            <List
-              items={recipe.ingredients.map(item => item.title)}
-              type={'numeric'}
-              itemStyle={{ marginBottom: 0 }}
-              delimiter={true}
-            />
-          </View>
-        ))
-      }
+                <List
+                  items={recipe.ingredients.map(item => item.title)}
+                  type={'numeric'}
+                  itemStyle={{ marginBottom: 0 }}
+                  delimiter={true}
+                />
+              </Pressable>
+            </View>
+          ))
+        }
+      </ScrollView>
     </SafeAreaView>
   )
 }

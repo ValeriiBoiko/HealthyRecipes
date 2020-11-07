@@ -1,5 +1,5 @@
 import Action from "../constants/Action";
-import { getRecipes, getRecipe, getInstructions, getSimilarRecipes } from "../service";
+import { getRecipes, getRecipe, getInstructions } from "../service";
 
 export function updateRecipes(number = 0, offset = 0) {
   return (dispatch, getState) => {
@@ -30,16 +30,14 @@ export function setRecipe(id = -1) {
 
     const recipe = getRecipe(id);
     const instructions = getInstructions(id);
-    const similar = getSimilarRecipes(id);
 
-    Promise.all([recipe, instructions, similar])
+    Promise.all([recipe, instructions])
       .then((values) => {
         dispatch({
           type: Action.SET_RECIPE,
           payload: {
             ...values[0],
             instructions: values[1],
-            similarRecipes: values[2],
             state: 'READY',
           }
         })

@@ -8,8 +8,6 @@ import { updateRecipes } from '../middleware';
 import { wp } from '../utils';
 
 function Recipes(props) {
-  const [readyToShow, setReadyToShow] = useState(false);
-
   const recipes = props.recipes.map((recipe) => (
     <Recipe onPress={() => {
       props.navigation.navigate(
@@ -23,14 +21,11 @@ function Recipes(props) {
 
   useEffect(() => {
     if (!recipes.length) {
-      setTimeout(() => {
-        setReadyToShow(true);
-      }, 1500)
       props.updateRecipes(4, 0);
     }
   }, [])
 
-  if (!readyToShow || !props.recipes.length) {
+  if (!props.recipes.length) {
     return <Loader label={'Recipes made with love...'} />
   }
 

@@ -72,24 +72,3 @@ export function getInstructions(recipeId) {
       .catch(err => rej(err));
   })
 }
-
-export function getSimilarRecipes(recipeId, number = 3) {
-  let url = `https://api.spoonacular.com/recipes/${recipeId}/similar?apiKey=${key}&number=${number}`;
-
-  return new Promise((resolve, reject) => {
-    fetch(url)
-      .then(resp => resp.json())
-      .then(recipes => {
-
-        const result = recipes.map(recipe => ({
-          id: recipe.id,
-          title: recipe.title,
-          readyInMinutes: recipe.readyInMinutes,
-          image: `https://spoonacular.com/recipeImages/${recipe.id}-312x231.${recipe.imageType}`
-        }))
-
-        resolve(result)
-      })
-      .catch(err => reject(err))
-  })
-}

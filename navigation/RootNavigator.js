@@ -4,10 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Search from '../screens/Search';
 import Favorites from '../screens/Favorites';
 import Cart from '../screens/Cart';
-import { DarkTheme, LightTheme } from '../constants/Design';
+import { DarkTheme, Font, LightTheme } from '../constants/Design';
 import Icon from '../components/Icon';
 import RecipesNavigator from './RecipesNavigator';
 import { StatusBar } from 'react-native';
+import { wp } from '../utils';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,16 +40,19 @@ function RootNavigator(props) {
                 break;
             }
 
-            return <Icon name={iconName} color={color} size={18} />
+            return <Icon name={iconName} color={color} size={wp(18)} />
           }
         })}
         tabBarOptions={{
+          labelStyle: {
+            fontSize: wp(11),
+            fontFamily: Font.regular
+          },
           tabStyle: {
-            height: 50,
-            paddingBottom: 8,
-            justifyContent: 'center'
+            paddingVertical: wp(4)
           },
           style: {
+            height: wp(50),
             backgroundColor: theme.colors.background,
             borderTopColor: theme.colors.border,
             borderTopWidth: 1,
