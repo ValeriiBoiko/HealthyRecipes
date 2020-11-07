@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Search from '../screens/Search';
 import Favorites from '../screens/Favorites';
 import Cart from '../screens/Cart';
-import { LightTheme } from '../constants/Design';
+import { DarkTheme, LightTheme } from '../constants/Design';
 import Icon from '../components/Icon';
 import RecipesNavigator from './RecipesNavigator';
 import { StatusBar } from 'react-native';
@@ -15,6 +15,7 @@ StatusBar.setHidden(true);
 
 function RootNavigator(props) {
   const theme = LightTheme;
+  // const theme = DarkTheme;
 
   return (
     <NavigationContainer theme={theme}>

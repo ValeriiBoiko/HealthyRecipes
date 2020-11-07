@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
+import Loader from '../components/Loader/Loader';
 import Recipe from '../components/Recipe';
 import { updateRecipes } from '../middleware';
 import { wp } from '../utils';
 
 function Recipes(props) {
+  const [readyToShow, setReadyToShow] = useState(false);
+
   const recipes = props.recipes.map((recipe) => (
     <Recipe onPress={() => {
       props.navigation.navigate(
@@ -20,10 +23,16 @@ function Recipes(props) {
 
   useEffect(() => {
     if (!recipes.length) {
-      console.log(1);
-      props.updateRecipes(5, 0);
+      setTimeout(() => {
+        setReadyToShow(true);
+      }, 1500)
+      props.updateRecipes(4, 0);
     }
   }, [])
+
+  if (!readyToShow || !props.recipes.length) {
+    return <Loader label={'Recipes made with love...'} />
+  }
 
   return (
     <SafeAreaView>

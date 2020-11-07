@@ -4,7 +4,7 @@ import { Image, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { wp } from '../../utils';
 import { Font } from '../../constants/Design';
 
-function Recipe({ id, calories, image, title, ...props }) {
+function Recipe({ id, image, title, ...props }) {
   const { colors } = useTheme();
 
   return (
@@ -23,9 +23,9 @@ function Recipe({ id, calories, image, title, ...props }) {
             marginBottom: 10,
           }} />
 
-          <Text numberOfLines={2} style={{
-            fontSize: wp(16),
-            lineHeight: wp(20),
+          <Text numberOfLines={props.numberOfLines} style={{
+            fontSize: props.fontSize,
+            lineHeight: props.fontSize * 1.25,
             color: colors.text,
             fontFamily: Font.regular
           }}>{title}</Text>
@@ -36,7 +36,9 @@ function Recipe({ id, calories, image, title, ...props }) {
 }
 
 Recipe.defaultProps = {
-  onPress: () => null
+  onPress: () => null,
+  numberOfLines: 2,
+  fontSize: wp(16),
 }
 
 export default Recipe;
