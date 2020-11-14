@@ -4,7 +4,7 @@ import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
 import { wp } from '../../utils';
 import Icon from '../Icon';
 
-function Loader({ isVisible, color, label, spinnerColor, labelStyles, ...props }) {
+function Loader({ isVisible, color, label, spinnerColor, labelStyles, isCompact, ...props }) {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors));
   const animated = useRef(new Animated.Value(0)).current;
@@ -42,9 +42,15 @@ function Loader({ isVisible, color, label, spinnerColor, labelStyles, ...props }
     outputRange: [.25, 1]
   })
 
+  const width = isCompact ? 20 : 70;
+  const height = isCompact ? 22 : 77;
+
   return (
     <View {...props} style={[styles.container, props.style]}>
-      <View style={{ width: 70, height: 77 }}>
+      <View style={{
+        width: width,
+        height: height,
+      }}>
         <Animated.View style={[
           {
             position: 'absolute',
@@ -55,7 +61,7 @@ function Loader({ isVisible, color, label, spinnerColor, labelStyles, ...props }
             ]
           }
         ]}>
-          <Icon name={'heart'} size={70} color={colors.accent} />
+          <Icon name={'heart'} size={width} color={colors.accent} />
         </Animated.View>
       </View>
       <Text style={[styles.label, labelStyles]}>{label}</Text>
