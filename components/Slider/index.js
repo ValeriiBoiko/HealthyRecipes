@@ -72,8 +72,7 @@ function Slider(props) {
         </Animated.View>
         <PanGestureHandler
           onGestureEvent={onGestureEvent}
-          onHandlerStateChange={onGestureEvent}
-        >
+          onHandlerStateChange={onGestureEvent}>
           <Animated.View style={[styles.thumbHitBox, {
             left: interpolatedTransX,
           }]}>
