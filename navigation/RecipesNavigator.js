@@ -12,7 +12,9 @@ function RecipesNavigator() {
       headerShown: false,
     }}>
       <Stack.Screen name={'RecipesCategories'} component={RecipesCategories} />
-      <Stack.Screen name={'Recipes'} component={Recipes} />
+      <Stack.Screen name={'Recipes'} options={{
+        headerShown: true,
+      }} component={Recipes} />
       <Stack.Screen name={'Recipe'} component={Recipe} />
     </Stack.Navigator >
   )

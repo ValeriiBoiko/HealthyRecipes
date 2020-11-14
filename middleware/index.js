@@ -1,21 +1,21 @@
 import Action from "../constants/Action";
 import { getRecipes, getRecipe, getInstructions } from "../service";
 
-export function updateRecipes(number = 0, offset = 0) {
+export function updateRecipes(config) {
   return (dispatch, getState) => {
     const recipes = getState().recipes;
 
-    getRecipes({
-      number,
-      offset
-    })
-      .then((result) => {
-        dispatch({
-          type: Action.SET_RECIPES,
-          payload: recipes.concat(result)
+    if (config.number && config.number > 0) {
+      getRecipes(config)
+        .then((result) => {
+          dispatch({
+            type: Action.SET_RECIPES,
+            payload: recipes.concat(result)
+          })
         })
-      })
-      .catch((err) => console.log(err))
+        .catch((err) => console.log(err))
+    }
+
   }
 }
 
