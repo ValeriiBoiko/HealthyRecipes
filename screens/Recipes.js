@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -10,12 +10,7 @@ import { wp } from '../utils';
 function Recipes(props) {
   const recipes = props.recipes.map((recipe) => (
     <Recipe onPress={() => {
-      props.navigation.navigate(
-        'Recipe',
-        {
-          recipeId: recipe.id
-        }
-      )
+      props.navigation.navigate('Recipe', { recipeId: recipe.id })
     }} key={recipe.id} style={styles.recipe} {...recipe} />
   ));
 

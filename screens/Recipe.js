@@ -1,6 +1,6 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useEffect, useMemo, useState } from 'react';
-import { Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useMemo } from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from '../components/Icon';
 import IngredientList from '../components/IngredientList';
@@ -38,11 +38,7 @@ function Recipe({ recipe, favorites, ...props }) {
   }, []);
 
   if (!recipe.state || recipe.state !== 'READY') {
-    return (
-      <Loader
-        label={'Recipe made with love...'}
-      />
-    );
+    return <Loader label={'Recipe made with love...'} />
   }
 
   const infoItems = recipeInfo.map((item, index) => (
