@@ -7,7 +7,7 @@ import { Font } from '../../constants/Design';
 import { wp } from '../../utils';
 import Icon from '../Icon';
 
-function NavigationHeader() {
+function NavigationHeader(props) {
   const route = useRoute();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
@@ -36,7 +36,7 @@ function NavigationHeader() {
       <Text style={[styles.routeName, {
         marginRight: showBackButton ? wp(55) : wp(20),
         color: colors.text,
-      }]}>{route.name}</Text>
+      }]}>{props.title || route.name}</Text>
     </View>
   )
 }

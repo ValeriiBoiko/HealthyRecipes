@@ -7,7 +7,7 @@ import { Font } from '../../constants/Design';
 import { wp } from '../../utils';
 import Icon from '../Icon';
 
-function NavigationHeader() {
+function NavigationHeader(props) {
   const route = useRoute();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
@@ -31,7 +31,7 @@ function NavigationHeader() {
           </Touchable>
         )
       }
-      <Text style={styles.routeName}>{route.name}</Text>
+      <Text style={styles.routeName}>{props.title || route.name}</Text>
     </View>
   )
 }

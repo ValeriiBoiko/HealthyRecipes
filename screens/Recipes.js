@@ -41,7 +41,7 @@ function Recipes(props) {
 
   return (
     <View>
-      <NavigationHeader />
+      <NavigationHeader title={props.route.params.title} />
 
       <FlatList
         style={styles.scrollView}
