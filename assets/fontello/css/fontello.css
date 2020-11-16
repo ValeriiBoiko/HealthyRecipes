@@ -1,13 +1,11 @@
-@charset "UTF-8";
-
- @font-face {
+@font-face {
   font-family: 'fontello';
-  src: url('../font/fontello.eot?75854065');
-  src: url('../font/fontello.eot?75854065#iefix') format('embedded-opentype'),
-       url('../font/fontello.woff2?75854065') format('woff2'),
-       url('../font/fontello.woff?75854065') format('woff'),
-       url('../font/fontello.ttf?75854065') format('truetype'),
-       url('../font/fontello.svg?75854065#fontello') format('svg');
+  src: url('../font/fontello.eot?38650740');
+  src: url('../font/fontello.eot?38650740#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff2?38650740') format('woff2'),
+       url('../font/fontello.woff?38650740') format('woff'),
+       url('../font/fontello.ttf?38650740') format('truetype'),
+       url('../font/fontello.svg?38650740#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -17,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?75854065#fontello') format('svg');
+    src: url('../font/fontello.svg?38650740#fontello') format('svg');
   }
 }
 */
@@ -57,14 +55,15 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
  
-.icon-plus:before { content: '\2b'; } /* '+' */
-.icon-minus-1:before { content: '\2d'; } /* '-' */
+.icon-clock-1:before { content: '\2b'; } /* '+' */
+.icon-minus:before { content: '\2d'; } /* '-' */
+.icon-left-open-big:before { content: '\e765'; } /* '' */
 .icon-heart:before { content: '\e800'; } /* '' */
 .icon-heart-empty:before { content: '\e801'; } /* '' */
 .icon-basket:before { content: '\e802'; } /* '' */
 .icon-clock:before { content: '\e803'; } /* '' */
-.icon-clock-1:before { content: '\e804'; } /* '' */
+.icon-plus:before { content: '\e804'; } /* '' */
 .icon-back-in-time:before { content: '\e805'; } /* '' */
 .icon-user:before { content: '\e806'; } /* '' */
+.icon-search:before { content: '\e808'; } /* '' */
 .icon-food:before { content: '\f0f5'; } /* '' */
-.icon-search:before { content: '🔍'; } /* '\1f50d' */

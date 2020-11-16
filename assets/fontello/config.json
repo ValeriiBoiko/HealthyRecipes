@@ -9,13 +9,13 @@
     {
       "uid": "9dd9e835aebe1060ba7190ad2b2ed951",
       "css": "search",
-      "code": 128269,
+      "code": 59400,
       "src": "fontawesome"
     },
     {
       "uid": "70370693ada58ef0a60fa0984fe8d52a",
       "css": "plus",
-      "code": 43,
+      "code": 59396,
       "src": "entypo"
     },
     {
@@ -51,7 +51,7 @@
     {
       "uid": "598a5f2bcf3521d1615de8e1881ccd17",
       "css": "clock-1",
-      "code": 59396,
+      "code": 43,
       "src": "fontawesome"
     },
     {
@@ -70,6 +70,12 @@
       "uid": "1256e3054823e304d7e452a589cf8bb8",
       "css": "minus",
       "code": 45,
+      "src": "entypo"
+    },
+    {
+      "uid": "884cfc3e6e2d456dd2a2ca0dbb9e6337",
+      "css": "left-open-big",
+      "code": 59237,
       "src": "entypo"
     }
   ]
