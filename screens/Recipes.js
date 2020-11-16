@@ -51,23 +51,11 @@ function Recipes(props) {
         onEndReached={() => console.log(1)}
         onEndReachedThreshold={.75}
         ListFooterComponent={(
-          <View style={{
-            height: 50,
-            width: '100%',
-            backgroundColor: 'red',
-            marginTop: wp(16)
-          }}>
-
-            <Loader isCompact={true} label={'Loading ...'} style={{
-              backgroundColor: colors.card,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }} labelStyles={{
-              width: 'auto',
-              paddingHorizontal: wp(12)
-            }} />
-
+          <View style={styles.loaderContainer}>
+            <Loader isCompact={true}
+              label={'Loading ...'}
+              style={[styles.loader, { backgroundColor: colors.card }]}
+              labelStyles={{ width: 'auto', paddingHorizontal: wp(12) }} />
           </View>
         )}
       />
@@ -93,6 +81,16 @@ const styles = StyleSheet.create({
     flexBasis: '50%',
     paddingHorizontal: wp(4),
     paddingBottom: wp(8),
+  },
+  loaderContainer: {
+    height: wp(50),
+    width: '100%',
+    marginTop: wp(16)
+  },
+  loader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
