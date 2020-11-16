@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import Loader from '../components/Loader/Loader';
 import Recipe from '../components/Recipe';
+import NavigationHeader from '../components/NavigationHeader';
 import { updateRecipes } from '../middleware';
 import { wp } from '../utils';
 
@@ -40,6 +41,8 @@ function Recipes(props) {
 
   return (
     <View>
+      <NavigationHeader />
+
       <FlatList
         style={styles.scrollView}
         data={props.recipes}
