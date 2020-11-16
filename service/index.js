@@ -11,9 +11,10 @@ export function getRecipes(config) {
       value = value.join(',+');
     }
 
-    query += `${param}=${value}&`;
+    if (value !== null && value !== undefined) {
+      query += `${param}=${value}&`;
+    }
   }
-
 
   if (query.length) {
     url = url + '&' + query;

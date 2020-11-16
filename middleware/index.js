@@ -1,16 +1,24 @@
+import { batch } from "react-redux";
 import Action from "../constants/Action";
 import { getRecipes, getRecipe, getInstructions } from "../service";
 
 export function updateRecipes(config) {
   return (dispatch, getState) => {
-    const recipes = getState().recipes;
+    const { recipes, currentDiet } = getState();
+    const dietRecipes = config.diet !== currentDiet ? [] : recipes;
 
     if (config.number && config.number > 0) {
       getRecipes(config)
         .then((result) => {
-          dispatch({
-            type: Action.SET_RECIPES,
-            payload: recipes.concat(result)
+          batch(() => {
+            dispatch({
+              type: Action.SET_RECIPES,
+              payload: dietRecipes.concat(result)
+            })
+            dispatch({
+              type: Action.SET_DIET,
+              payload: config.diet
+            })
           })
         })
         .catch((err) => console.log(err))

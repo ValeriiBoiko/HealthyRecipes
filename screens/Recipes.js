@@ -1,7 +1,6 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import Loader from '../components/Loader/Loader';
 import Recipe from '../components/Recipe';
@@ -9,7 +8,6 @@ import { updateRecipes } from '../middleware';
 import { wp } from '../utils';
 
 function Recipes(props) {
-  // const offset = useRef
   const { colors } = useTheme();
   const renderRecipes = ({ item, index }) => (
     <Recipe onPress={() => {
@@ -23,24 +21,22 @@ function Recipes(props) {
   );
 
   useEffect(() => {
-    if (!props.recipes.length) {
+    if (!props.route.params) {
+      props.route.params = {};
+    }
+
+    if (!props.recipes.length || props.route.params.diet !== props.currentDiet) {
       props.updateRecipes({
         number: 12,
         offset: 0,
-        diet: 'Vegetarian',
+        diet: props.route.params.diet
       });
     }
   }, [])
 
-  // useEffect(() => {
-  //   console.log(props.recipes.length)
-  // }, [props.recipes])
-
-  if (!props.recipes.length) {
+  if (!props.recipes.length || props.route.params.diet !== props.currentDiet) {
     return <Loader label={'Recipes made with love...'} />
   }
-
-
 
   return (
     <View>
@@ -99,25 +95,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   recipes: state.recipes,
-  // recipes: [
-  //   { id: 1 },
-  //   { id: 2 },
-  //   { id: 3 },
-  //   { id: 4 },
-  //   { id: 5 },
-  //   { id: 6 },
-  // {id: 7 },
-  // {id: 8 },
-  // {id: 9 },
-  // {id: 10 },
-  // {id: 11 },
-  // {id: 12 },
-  // {id: 13 },
-  // {id: 14 },
-  // {id: 15 },
-  // {id: 16 },
-  // {id: 17 }
-  // ],
+  currentDiet: state.currentDiet,
 });
 
 const mapDispatchToProps = (dispatch) => ({

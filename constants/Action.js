@@ -1,4 +1,5 @@
 export default {
+  SET_DIET: "SET_DIET",
   SET_THEME: "SET_THEME",
   SET_RECIPE: "SET_RECIPE",
   SET_RECIPES: "SET_RECIPES",
