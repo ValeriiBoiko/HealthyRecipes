@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { Dimensions, FlatList, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import List from '../components/List';
 import { Font } from '../constants/Design';
@@ -33,12 +33,9 @@ function Cart(props) {
   )
 
   return (
-    <SafeAreaView style={{ backgroundColor: colors.background, flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <FlatList
-        contentContainerStyle={{
-          marginHorizontal: wp(20),
-          flex: 1
-        }}
+        contentContainerStyle={styles.contentContainerStyle}
         data={props.cart}
         renderItem={renderRecipes}
         keyExtractor={(item) => item.id.toString()}
@@ -64,6 +61,10 @@ function Cart(props) {
 }
 
 const getStyles = (colors) => StyleSheet.create({
+  contentContainerStyle: {
+    flex: 1,
+    marginHorizontal: wp(20),
+  },
   recipe: {
     backgroundColor: colors.card,
     marginTop: wp(20),
