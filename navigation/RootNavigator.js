@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Search from '../screens/Search';
 import Favorites from '../screens/Favorites';
 import Cart from '../screens/Cart';
 import { DarkTheme, Font, LightTheme } from '../constants/Design';
 import Icon from '../components/Icon';
 import RecipesNavigator from './RecipesNavigator';
+import SearchNavigator from './SearchNavigator';
 import { StatusBar } from 'react-native';
 import { wp } from '../utils';
 
@@ -60,7 +60,7 @@ function RootNavigator(props) {
         }}
       >
         <Tab.Screen name={'Recipes'} component={RecipesNavigator} />
-        <Tab.Screen name={'Search'} component={Search} />
+        <Tab.Screen name={'Search'} component={SearchNavigator} />
         <Tab.Screen name={'Favorites'} component={Favorites} />
         <Tab.Screen name={'Cart'} component={Cart} />
       </Tab.Navigator>
