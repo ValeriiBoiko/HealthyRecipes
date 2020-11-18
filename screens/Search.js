@@ -38,6 +38,7 @@ function Search(props) {
     "Wheat"
   ];
 
+  const [searchQuery, setSearchQuery] = useState('');
   const [activeDiet, setDiet] = useState(null);
   const [activeIntolerances, setIntolerances] = useState([]);
   const [readyTime, setReadyTime] = useState(0);
@@ -65,6 +66,7 @@ function Search(props) {
   function onSearch() {
     props.navigation.navigate('Recipes', {
       config: {
+        query: searchQuery,
         maxReadyTime: readyTime,
         intolerances: activeIntolerances,
         diet: activeDiet,
@@ -80,6 +82,7 @@ function Search(props) {
         <TextInput
           placeholder={'Search by title'}
           style={styles.searchInput}
+          onChangeText={setSearchQuery}
         />
 
         <View style={styles.card}>
