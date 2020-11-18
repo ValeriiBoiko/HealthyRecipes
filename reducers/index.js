@@ -2,8 +2,10 @@ import Action from "../constants/Action";
 import { LightTheme } from "../constants/Design";
 
 const initialState = {
-  currentDiet: null,
-  recipes: [],
+  recipes: {
+    searchRecipes: [],
+    categoryRecipes: []
+  },
   favorites: [],
   cart: {},
   recipe: {},
@@ -16,11 +18,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         recipes: action.payload
-      }
-    case Action.SET_DIET:
-      return {
-        ...state,
-        currentDiet: action.payload
       }
     case Action.SET_RECIPE:
       return {

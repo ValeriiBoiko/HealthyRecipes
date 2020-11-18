@@ -1,4 +1,3 @@
-import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import Recipe from '../screens/Recipe';

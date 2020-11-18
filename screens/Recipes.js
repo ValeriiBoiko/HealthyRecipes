@@ -1,52 +1,56 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import Loader from '../components/Loader/Loader';
 import Recipe from '../components/Recipe';
 import NavigationHeader from '../components/NavigationHeader';
-import { updateRecipes } from '../middleware';
+import { setRecipes, addRecipes } from '../middleware';
 import { wp } from '../utils';
 
-function Recipes(props) {
+function Recipes({ recipes, navigation, ...props }) {
+
   const { colors } = useTheme();
-  const renderRecipes = ({ item, index }) => (
-    <Recipe onPress={() => {
-      props.navigation.navigate('Recipe', { recipeId: item.id })
-    }} key={item.id} style={[
-      styles.recipe, {
-        paddingRight: index % 2 === 0 ? wp(4) : 0,
-        paddingLeft: index % 2 !== 0 ? wp(4) : 0,
-      }
-    ]} {...item} />
+  const params = props.route.params;
+  const [loaderVisible, setLoaderFlag] = useState(false);
+  const recipesData = recipes[params.type];
+
+  const renderRecipes = ({ item }) => (
+    <Recipe
+      {...item}
+      style={styles.recipe}
+      onPress={() => navigation.navigate('Recipe', { recipeId: item.id })}
+    />
   );
 
   useEffect(() => {
-    if (!props.route.params) {
-      props.route.params = {};
-    }
-
-    if (!props.recipes.length || props.route.params.diet !== props.currentDiet) {
-      props.updateRecipes({
-        number: 12,
-        offset: 0,
-        diet: props.route.params.diet
-      });
-    }
+    setLoaderFlag(true);
+    props.setRecipes({
+      number: 12,
+      offset: 0,
+      ...params.config,
+    }, params.type);
   }, [])
 
-  if (!props.recipes.length || props.route.params.diet !== props.currentDiet) {
+  useEffect(() => {
+    if (recipesData.length && loaderVisible) {
+      setLoaderFlag(false);
+    }
+  }, [recipesData])
+
+  if (loaderVisible) {
     return <Loader label={'Recipes made with love...'} />
   }
 
   return (
     <View>
-      <NavigationHeader title={props.route.params.title} />
+      <NavigationHeader title={params.title} />
 
       <FlatList
-        style={styles.scrollView}
-        data={props.recipes}
+        style={styles.list}
+        data={recipesData}
         renderItem={renderRecipes}
+        keyExtractor={(item) => item.id}
         numColumns={2}
         onEndReached={() => console.log(1)}
         onEndReachedThreshold={.75}
@@ -59,28 +63,19 @@ function Recipes(props) {
           </View>
         )}
       />
-
     </View>
-
   )
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    paddingHorizontal: wp(20),
+  list: {
+    paddingHorizontal: wp(10),
     marginVertical: wp(20),
   },
-  containerStyle: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-  },
   recipe: {
-    flexGrow: 0,
-    flexShrink: 0,
-    flexBasis: '50%',
-    paddingHorizontal: wp(4),
-    paddingBottom: wp(8),
+    flex: 1,
+    paddingHorizontal: wp(5),
+    paddingBottom: wp(10),
   },
   loaderContainer: {
     height: wp(50),
@@ -96,11 +91,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   recipes: state.recipes,
-  currentDiet: state.currentDiet,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateRecipes: (config) => dispatch(updateRecipes(config)),
+  setRecipes: (config, recipesType) => dispatch(setRecipes(config, recipesType)),
+  addRecipes: (config, recipesType) => dispatch(addRecipes(config, recipesType)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Recipes);

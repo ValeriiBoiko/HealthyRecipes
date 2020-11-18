@@ -2,10 +2,9 @@ import { batch } from "react-redux";
 import Action from "../constants/Action";
 import { getRecipes, getRecipe, getInstructions } from "../service";
 
-export function updateRecipes(config) {
+export function addRecipes(config, recipesType) {
   return (dispatch, getState) => {
-    const { recipes, currentDiet } = getState();
-    const dietRecipes = config.diet !== currentDiet ? [] : recipes;
+    const { recipes } = getState();
 
     if (config.number && config.number > 0) {
       getRecipes(config)
@@ -13,17 +12,35 @@ export function updateRecipes(config) {
           batch(() => {
             dispatch({
               type: Action.SET_RECIPES,
-              payload: dietRecipes.concat(result)
-            })
-            dispatch({
-              type: Action.SET_DIET,
-              payload: config.diet
+              payload: {
+                ...recipes,
+                [recipesType]: recipes[recipesType].concat(result)
+              }
             })
           })
         })
         .catch((err) => console.log(err))
     }
+  }
+}
 
+export function setRecipes(config, recipesType) {
+  return (dispatch, getState) => {
+    const { recipes } = getState();
+
+    if (config.number && config.number > 0) {
+      getRecipes(config)
+        .then((result) => {
+          dispatch({
+            type: Action.SET_RECIPES,
+            payload: {
+              ...recipes,
+              [recipesType]: result
+            }
+          })
+        })
+        .catch((err) => console.log(err))
+    }
   }
 }
 

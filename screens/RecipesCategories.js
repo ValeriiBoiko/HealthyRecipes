@@ -55,8 +55,11 @@ function RecipesCategories(props) {
   const renderCategories = categories.map(cat => (
     <Pressable key={cat.title} onPress={() => {
       props.navigation.navigate('Recipes', {
-        diet: cat.diet,
+        config: {
+          diet: cat.diet,
+        },
         title: cat.title,
+        type: 'categoryRecipes'
       })
     }}>
       <View style={styles.category}>
