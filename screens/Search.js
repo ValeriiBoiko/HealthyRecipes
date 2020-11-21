@@ -65,13 +65,14 @@ function Search(props) {
 
   function onSearch() {
     props.navigation.navigate('Recipes', {
+      type: 'searchRecipes',
+      title: 'Search results',
       config: {
         query: searchQuery,
         maxReadyTime: readyTime,
         intolerances: activeIntolerances,
         diet: activeDiet,
       },
-      type: 'searchRecipes'
     })
   }
 

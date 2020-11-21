@@ -23,6 +23,14 @@ function Recipes({ recipes, navigation, ...props }) {
     />
   );
 
+  const onEndReached = () => {
+    props.addRecipes({
+      number: 12,
+      offset: recipesData.length,
+      ...params.config,
+    }, params.type);
+  }
+
   useEffect(() => {
     setLoaderFlag(true);
     props.setRecipes({
@@ -43,16 +51,14 @@ function Recipes({ recipes, navigation, ...props }) {
   }
 
   return (
-    <View>
-      <NavigationHeader title={params.title} />
-
+    <View style={{ flexDirection: 'column-reverse', flex: 1 }}>
       <FlatList
-        style={styles.list}
+        contentContainerStyle={styles.list}
         data={recipesData}
         renderItem={renderRecipes}
         keyExtractor={(item) => item.id}
         numColumns={2}
-        onEndReached={() => console.log(1)}
+        onEndReached={onEndReached}
         onEndReachedThreshold={.75}
         ListFooterComponent={(
           <View style={styles.loaderContainer}>
@@ -63,6 +69,8 @@ function Recipes({ recipes, navigation, ...props }) {
           </View>
         )}
       />
+
+      <NavigationHeader title={params.title} />
     </View>
   )
 }
@@ -70,7 +78,7 @@ function Recipes({ recipes, navigation, ...props }) {
 const styles = StyleSheet.create({
   list: {
     paddingHorizontal: wp(10),
-    marginVertical: wp(20),
+    paddingVertical: wp(20),
   },
   recipe: {
     flex: 1,
