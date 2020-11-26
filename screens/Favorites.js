@@ -1,7 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import Icon from '../components/Icon';
 import Recipe from '../components/Recipe';
@@ -10,7 +10,8 @@ import { wp } from '../utils';
 
 function Favorites(props) {
   const { colors } = useTheme();
-  const styles = useMemo(() => getStyles(colors))
+  const styles = useMemo(() => getStyles(colors), [colors])
+  const insets = useSafeAreaInsets();
   const screenWidth = Dimensions.get('window').width;
 
   const renderRecipe = ({ item }) => (
@@ -29,6 +30,20 @@ function Favorites(props) {
           flex: props.recipes.length ? null : 1,
           marginHorizontal: wp(16),
         }}
+        ListHeaderComponent={(
+          props.recipes.length && (
+            <View style={{
+              paddingHorizontal: wp(4),
+              marginTop: insets.top > 0 ? 0 : wp(20),
+              marginBottom: wp(16)
+            }}>
+              <Text style={styles.screenTitle}>Favorite recipes</Text>
+              <Text style={styles.primaryText}>
+                Save recipes to make them favorite
+              </Text>
+            </View>
+          )
+        )}
         ListEmptyComponent={(
           <View style={styles.emptyCartMessage}>
             <Icon name={'heart'} color={colors.border} size={screenWidth * .3} />
@@ -52,6 +67,18 @@ function Favorites(props) {
 }
 
 const getStyles = (colors) => StyleSheet.create({
+  screenTitle: {
+    fontFamily: Font.bold,
+    fontSize: wp(24),
+    lineHeight: wp(30),
+    color: colors.text,
+  },
+  primaryText: {
+    fontFamily: Font.bold,
+    fontSize: wp(16),
+    lineHeight: wp(20),
+    color: colors.primary,
+  },
   recipe: {
     flexGrow: 0,
     flexShrink: 0,

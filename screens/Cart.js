@@ -6,10 +6,12 @@ import List from '../components/List';
 import { Font } from '../constants/Design';
 import { wp } from '../utils';
 import Icon from '../components/Icon';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function Cart(props) {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors])
+  const insets = useSafeAreaInsets();
   const screenWidth = Dimensions.get('window').width;
 
   const renderRecipes = ({ item }) => (
@@ -35,10 +37,24 @@ function Cart(props) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
-        contentContainerStyle={styles.contentContainerStyle}
+        contentContainerStyle={{
+          marginHorizontal: wp(20),
+          paddingBottom: wp(16),
+          flex: props.cart.length ? null : 1,
+        }}
         data={props.cart}
         renderItem={renderRecipes}
         keyExtractor={(item) => item.id.toString()}
+        ListHeaderComponent={(
+          props.cart.length && (
+            <View style={{ marginTop: insets.top > 0 ? 0 : wp(20), }}>
+              <Text style={styles.screenTitle}>Shopping cart</Text>
+              <Text style={styles.primaryText}>
+                Make your grocery list based on recipes
+              </Text>
+            </View>
+          )
+        )}
         ListEmptyComponent={(
           <View style={styles.emptyCartMessage}>
             <Icon name={'basket'} color={colors.border} size={screenWidth * .3} />
@@ -61,13 +77,21 @@ function Cart(props) {
 }
 
 const getStyles = (colors) => StyleSheet.create({
-  contentContainerStyle: {
-    flex: 1,
-    marginHorizontal: wp(20),
+  screenTitle: {
+    fontFamily: Font.bold,
+    fontSize: wp(24),
+    lineHeight: wp(30),
+    color: colors.text,
+  },
+  primaryText: {
+    fontFamily: Font.bold,
+    fontSize: wp(16),
+    lineHeight: wp(20),
+    color: colors.primary,
   },
   recipe: {
     backgroundColor: colors.card,
-    marginTop: wp(20),
+    marginTop: wp(16),
     paddingVertical: wp(12),
     paddingHorizontal: wp(12),
     borderRadius: wp(8),
