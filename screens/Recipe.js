@@ -12,8 +12,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Loader from '../components/Loader/Loader';
 
 function Recipe({ favorites, ...props }) {
-  const recipe = props.recipe[props.route.params.type] || {};
-  console.log(recipe.title, props.route.params.type)
+  const params = props.route.params || {};
+  const recipe = props.recipe[params.type];
   const { id, title, image, servings, readyInMinutes, sourceName, ingredients, aggregateLikes, instructions } = recipe;
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -36,10 +36,10 @@ function Recipe({ favorites, ...props }) {
   }
 
   useEffect(() => {
-    props.setRecipe(props.route.params.recipeId, props.route.params.type);
+    props.setRecipe(params.recipeId, params.type);
   }, []);
 
-  if (!recipe.state || recipe.state !== 'READY') {
+  if (recipe.state !== 'READY' || id !== params.recipeId) {
     return <Loader label={'Recipe made with love...'} />
   }
 

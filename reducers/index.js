@@ -9,7 +9,10 @@ const initialState = {
   favorites: [],
   cart: {},
   recipe: {
-    cart: {}
+    cart: {},
+    favorites: {},
+    searchRecipes: {},
+    categoryRecipes: {},
   },
   theme: LightTheme
 }
