@@ -153,6 +153,7 @@ function Search(props) {
 const getStyles = (colors) => StyleSheet.create({
   contentContainerStyle: {
     padding: wp(20),
+    paddingBottom: wp(70),
     minHeight: '100%',
   },
   searchInput: {

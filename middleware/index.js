@@ -44,8 +44,8 @@ export function setRecipes(config, recipesType) {
   }
 }
 
-export function setRecipe(id = -1) {
-  if (id === -1) return null;
+export function setRecipe(id = -1, type) {
+  if (!id && id !== 0) return null;
 
   return (dispatch) => {
     dispatch({
@@ -61,9 +61,11 @@ export function setRecipe(id = -1) {
         dispatch({
           type: Action.SET_RECIPE,
           payload: {
-            ...values[0],
-            instructions: values[1],
-            state: 'READY',
+            [type]: {
+              ...values[0],
+              instructions: values[1],
+              state: 'READY',
+            }
           }
         })
       })

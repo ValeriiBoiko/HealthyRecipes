@@ -17,7 +17,8 @@ function Cart(props) {
   const renderRecipes = ({ item }) => (
     <View style={styles.recipe}>
       <Pressable onPress={() => props.navigation.navigate('Recipe', {
-        recipeId: item.id
+        recipeId: item.id,
+        type: 'cart'
       })}>
         <View style={styles.recipeHeader}>
           <Image source={{ uri: item.image }} style={styles.recipeImage} />

@@ -8,7 +8,9 @@ const initialState = {
   },
   favorites: [],
   cart: {},
-  recipe: {},
+  recipe: {
+    cart: {}
+  },
   theme: LightTheme
 }
 
@@ -22,7 +24,10 @@ export default function (state = initialState, action) {
     case Action.SET_RECIPE:
       return {
         ...state,
-        recipe: action.payload
+        recipe: {
+          ...state.recipe,
+          ...action.payload
+        }
       }
     case Action.SET_FAVORITES:
       return {

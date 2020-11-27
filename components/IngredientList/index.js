@@ -9,7 +9,8 @@ import Icon from '../Icon';
 function IngredientList(props) {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors));
-  const selectedItems = props.cart.map(item => item.id);
+  const ingredientsInCart = props.cart[props.recipe.id] && props.cart[props.recipe.id].ingredients || []
+  const selectedItems = ingredientsInCart.map(item => item.id);
 
   function onPress(id, title) {
     const index = selectedItems.findIndex((item) => id === item);
@@ -84,7 +85,7 @@ const getStyles = (colors) => StyleSheet.create({
 })
 
 const mapStateToProps = (state) => ({
-  cart: state.cart[state.recipe.id] && state.cart[state.recipe.id].ingredients || []
+  cart: state.cart,
 })
 
 const mapDispatchToProps = (dispatch) => ({

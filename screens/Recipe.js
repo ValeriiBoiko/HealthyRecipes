@@ -11,7 +11,9 @@ import { wp } from '../utils';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Loader from '../components/Loader/Loader';
 
-function Recipe({ recipe, favorites, ...props }) {
+function Recipe({ favorites, ...props }) {
+  const recipe = props.recipe[props.route.params.type] || {};
+  console.log(recipe.title, props.route.params.type)
   const { id, title, image, servings, readyInMinutes, sourceName, ingredients, aggregateLikes, instructions } = recipe;
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -34,7 +36,7 @@ function Recipe({ recipe, favorites, ...props }) {
   }
 
   useEffect(() => {
-    props.setRecipe(props.route.params.recipeId);
+    props.setRecipe(props.route.params.recipeId, props.route.params.type);
   }, []);
 
   if (!recipe.state || recipe.state !== 'READY') {
@@ -80,7 +82,7 @@ function Recipe({ recipe, favorites, ...props }) {
         <Text style={styles.sectionTitle}>Ingredients required for recipe</Text>
         <Text style={styles.sectionSubTitle}>Total ingredient count : {ingredients.length}</Text>
 
-        <IngredientList recipe={recipe} ingredients={ingredients} />
+        <IngredientList recipe={recipe} ingredients={ingredients} type={props.route.params.type} />
       </View>
 
       <View style={[styles.sectionCard, styles.card]}>
@@ -203,7 +205,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setRecipe: (id) => dispatch(setRecipe(id)),
+  setRecipe: (id, type) => dispatch(setRecipe(id, type)),
   addToFavorite: (recipe) => dispatch(addToFavorite(recipe)),
   removeFromFavorite: (id) => dispatch(removeFromFavorite(id)),
 });

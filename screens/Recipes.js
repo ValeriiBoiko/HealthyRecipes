@@ -19,7 +19,7 @@ function Recipes({ recipes, navigation, ...props }) {
     <Recipe
       {...item}
       style={styles.recipe}
-      onPress={() => navigation.navigate('Recipe', { recipeId: item.id })}
+      onPress={() => navigation.navigate('Recipe', { recipeId: item.id, type: params.type })}
     />
   );
 

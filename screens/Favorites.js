@@ -16,7 +16,7 @@ function Favorites(props) {
 
   const renderRecipe = ({ item }) => (
     <Recipe key={item.id.toString()} style={styles.recipe} {...item} onPress={() => {
-      props.navigation.navigate('Recipe', { recipeId: item.id })
+      props.navigation.navigate('Recipe', { recipeId: item.id, type: 'favorite' })
     }} />
   )
 
