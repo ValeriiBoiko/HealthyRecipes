@@ -1,5 +1,5 @@
-import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import React from 'react';
+import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Touchable from '../../components/Touchable';

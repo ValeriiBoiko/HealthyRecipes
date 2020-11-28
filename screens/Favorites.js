@@ -29,6 +29,7 @@ function Favorites(props) {
         contentContainerStyle={{
           flex: props.recipes.length ? null : 1,
           marginHorizontal: wp(16),
+          paddingBottom: wp(8),
         }}
         ListHeaderComponent={(
           props.recipes.length && (

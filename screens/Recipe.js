@@ -51,7 +51,9 @@ function Recipe({ favorites, ...props }) {
   ));
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: wp(20) }}
+      showsVerticalScrollIndicator={false}>
       <View>
         <Image source={{ uri: image }} style={styles.image} />
 

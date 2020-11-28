@@ -140,3 +140,19 @@ export function removeFromCart(recipe, ingredient) {
     })
   }
 }
+
+export function removeRecipeFromCart(recipeId) {
+  return (dispatch, getState) => {
+    const { cart } = getState();
+    const updatedCart = { ...cart };
+
+    if (updatedCart[recipeId]) {
+      delete updatedCart[recipeId]
+    }
+
+    dispatch({
+      type: Action.UPDATE_CART,
+      payload: updatedCart
+    })
+  }
+}

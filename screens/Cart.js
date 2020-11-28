@@ -1,78 +1,67 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { Dimensions, FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import List from '../components/List';
 import { Font } from '../constants/Design';
 import { wp } from '../utils';
-import Icon from '../components/Icon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FlatList } from 'react-native-gesture-handler';
+import CartItem from '../components/CartItem';
+import EmptyListMessage from '../components/EmptyListMessage';
+import { Transition, Transitioning } from 'react-native-reanimated';
+import { removeRecipeFromCart } from '../middleware';
 
 function Cart(props) {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors])
   const insets = useSafeAreaInsets();
-  const screenWidth = Dimensions.get('window').width;
+  const transRef = useRef();
+  const transition = (
+    <Transition.Together>
+      <Transition.Change interpolation="easeInOut" />
+    </Transition.Together>
+  );
+  const listHeader = (
+    <View style={{ marginTop: insets.top > 0 ? 0 : wp(20), }}>
+      <Text style={styles.screenTitle}>Shopping cart</Text>
+      <Text style={styles.primaryText}>
+        Make your grocery list based on recipes
+      </Text>
+    </View>
+  );
 
   const renderRecipes = ({ item }) => (
-    <View style={styles.recipe}>
-      <Pressable onPress={() => props.navigation.navigate('Recipe', {
-        recipeId: item.id,
-        type: 'cart'
-      })}>
-        <View style={styles.recipeHeader}>
-          <Image source={{ uri: item.image }} style={styles.recipeImage} />
-          <Text style={styles.recipeTitle}>{item.title}</Text>
-        </View>
-
-        <List
-          items={item.ingredients.map(item => item.title)}
-          type={'numeric'}
-          itemStyle={{ marginBottom: 0 }}
-          delimiter={true}
-        />
-      </Pressable>
-    </View>
-  )
+    <CartItem {...item} onDelete={() => {
+      transRef.current.animateNextTransition();
+      props.removeRecipe(item.id)
+    }} />
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <FlatList
-        contentContainerStyle={{
-          marginHorizontal: wp(20),
-          paddingBottom: wp(16),
-          flex: props.cart.length ? null : 1,
-        }}
-        data={props.cart}
-        renderItem={renderRecipes}
-        keyExtractor={(item) => item.id.toString()}
-        ListHeaderComponent={(
-          props.cart.length && (
-            <View style={{ marginTop: insets.top > 0 ? 0 : wp(20), }}>
-              <Text style={styles.screenTitle}>Shopping cart</Text>
-              <Text style={styles.primaryText}>
-                Make your grocery list based on recipes
-              </Text>
-            </View>
-          )
-        )}
-        ListEmptyComponent={(
-          <View style={styles.emptyCartMessage}>
-            <Icon name={'basket'} color={colors.border} size={screenWidth * .3} />
-            <View>
-              <Text style={[
-                styles.emptyCartMessageText,
-                { marginTop: wp(20) }
-              ]}>
-                Your cart is empty so far.
-              </Text>
-              <Text style={styles.emptyCartMessageText}>
-                Open some recipe and press on the ingredient that you need to buy
-              </Text>
-            </View>
-          </View>
-        )}
-      />
+      <Transitioning.View
+        ref={transRef}
+        transition={transition}
+        style={{ flex: 1, }}
+      >
+        <FlatList
+          contentContainerStyle={{
+            marginHorizontal: wp(20),
+            paddingBottom: wp(16),
+            flex: props.cart.length ? null : 1,
+          }}
+          data={props.cart}
+          renderItem={renderRecipes}
+          keyExtractor={(item) => item.id.toString()}
+          ListHeaderComponent={props.cart.length && listHeader}
+          ListEmptyComponent={(
+            <EmptyListMessage
+              iconName={'basket'}
+              message={`Your cart is empty so far. Open some recipe and press on 
+            the ingredient that you need to buy`} />
+          )}
+        />
+      </Transitioning.View>
     </SafeAreaView>
   )
 }
@@ -133,4 +122,8 @@ const mapStateToProps = (state) => ({
   cart: Object.values(state.cart)
 });
 
-export default connect(mapStateToProps)(Cart);
+const mapDispatchToProps = (dispatch) => ({
+  removeRecipe: (id) => dispatch(removeRecipeFromCart(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

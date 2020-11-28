@@ -43,7 +43,7 @@ function Search(props) {
   const [activeIntolerances, setIntolerances] = useState([]);
   const [readyTime, setReadyTime] = useState(0);
 
-  function onIntoleracePress(item) {
+  function onIntolerancePress(item) {
     let updated = null;
 
     if (activeIntolerances.indexOf(item) > -1) {
@@ -134,7 +134,7 @@ function Search(props) {
                   icon={'plus'}
                   style={styles.dietBadge}
                   isActive={activeIntolerances.indexOf(item) > -1}
-                  onPress={onIntoleracePress} />
+                  onPress={onIntolerancePress} />
               ))
             }
           </View>
