@@ -44,10 +44,10 @@ export function getRecipe(id) {
           sourceName: rawRecipe.sourceName,
           summary: rawRecipe.summary,
           aggregateLikes: rawRecipe.aggregateLikes,
-          ingredients: rawRecipe.extendedIngredients.map((item) => ({
+          ingredients: rawRecipe.extendedIngredients ? rawRecipe.extendedIngredients.map((item) => ({
             id: item.id,
             title: item.original,
-          })),
+          })) : [],
         })
       })
       .catch(err => reject(err));
@@ -71,6 +71,6 @@ export function getInstructions(recipeId) {
 
         resolve(result);
       })
-      .catch(err => rej(err));
+      .catch(err => reject(err));
   })
 }
