@@ -24,9 +24,9 @@ function IngredientList(props) {
   }
 
   const ingredients = props.ingredients.map((item, index) => {
-    const isAdded = selectedItems.findIndex((current) => current === item.id);
+    const isAdded = selectedItems.findIndex((current) => current === item.id) > -1;
 
-    icon = isAdded > -1 ? (
+    icon = isAdded ? (
       <View style={[styles.button, styles.minusButton]}>
         <Icon name={'minus'} size={25} color={colors.error} />
       </View>
@@ -37,7 +37,10 @@ function IngredientList(props) {
       );
 
     return (
-      <Pressable key={item.id} onPress={() => onPress(item.id, item.title)}>
+      <Pressable
+        key={item.id}
+        testID={isAdded ? 'removeIngredient' : 'addIngredient'}
+        onPress={() => onPress(item.id, item.title)}>
         <View style={styles.item}>
           {icon}
           <Text style={styles.listTitle}>{item.title}</Text>

@@ -9,14 +9,12 @@ export function addRecipes(config, recipesType) {
     if (config.number && config.number > 0) {
       getRecipes(config)
         .then((result) => {
-          batch(() => {
-            dispatch({
-              type: Action.SET_RECIPES,
-              payload: {
-                ...recipes,
-                [recipesType]: recipes[recipesType].concat(result)
-              }
-            })
+          dispatch({
+            type: Action.SET_RECIPES,
+            payload: {
+              ...recipes,
+              [recipesType]: recipes[recipesType].concat(result)
+            }
           })
         })
         .catch((err) => console.log(err))

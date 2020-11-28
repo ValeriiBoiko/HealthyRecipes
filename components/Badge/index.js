@@ -50,7 +50,6 @@ function Badge({ label, icon, isActive, ...props }) {
   )
 
   return (
-
     <Pressable onPress={onPress}>
       <View {...props} style={[styles.badge, {
         borderColor: isActive ? colors.primary : colors.secondary,

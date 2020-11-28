@@ -98,7 +98,7 @@ function CartItem({ id, image, title, ingredients, ...props }) {
       onGestureEvent={onRecipeDrag}
       onHandlerStateChange={onRecipeDrag}
       minDist={20} >
-      <Animated.View style={[
+      <Animated.View {...props} style={[
         styles.recipe,
         {
           transform: [
@@ -108,7 +108,7 @@ function CartItem({ id, image, title, ingredients, ...props }) {
       ]}>
         <TapGestureHandler onHandlerStateChange={onTap}>
           <View><View style={styles.recipeHeader}>
-            <Image source={{ uri: image }} style={styles.recipeImage} />
+            <Image testID={'cartItemImage'} source={{ uri: image }} style={styles.recipeImage} />
             <Text style={styles.recipeTitle}>{title}</Text>
           </View>
 

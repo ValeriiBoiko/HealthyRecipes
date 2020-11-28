@@ -31,8 +31,10 @@ function Cart(props) {
   );
 
   const renderRecipes = ({ item }) => (
-    <CartItem {...item} onDelete={() => {
-      transRef.current.animateNextTransition();
+    <CartItem {...item} testID={'cartItem'} onDelete={() => {
+      if (transRef.current) {
+        transRef.current.animateNextTransition();
+      }
       props.removeRecipe(item.id)
     }} />
   );
@@ -56,6 +58,7 @@ function Cart(props) {
           ListHeaderComponent={props.cart.length && listHeader}
           ListEmptyComponent={(
             <EmptyListMessage
+              testID={'emptyCartMessage'}
               iconName={'basket'}
               message={`Your cart is empty so far. Open some recipe and press on 
             the ingredient that you need to buy`} />

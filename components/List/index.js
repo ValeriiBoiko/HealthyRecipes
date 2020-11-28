@@ -23,7 +23,7 @@ function List({ items, type, itemStyle, ...props }) {
   ))
 
   return (
-    <View>
+    <View {...props}>
       {listItems}
     </View>
   )
