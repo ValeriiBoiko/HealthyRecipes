@@ -1,6 +1,18 @@
 import Action from '../constants/Action';
 import {getRecipes, getRecipe, getInstructions} from '../service';
 
+function setRecipesAction(type, isReady, recipes) {
+  return {
+    type: Action.SET_RECIPES,
+    payload: {
+      [type]: {
+        isReady: isReady,
+        result: recipes,
+      },
+    },
+  };
+}
+
 export function addRecipes(config, recipesType) {
   return (dispatch, getState) => {
     const {recipes} = getState();
@@ -25,19 +37,13 @@ export function addRecipes(config, recipesType) {
 }
 
 export function setRecipes(config, recipesType) {
-  return (dispatch, getState) => {
-    const {recipes} = getState();
+  return (dispatch) => {
+    dispatch(setRecipesAction(recipesType, false, []));
 
     if (config.number && config.number > 0) {
       getRecipes(config)
         .then((result) => {
-          dispatch({
-            type: Action.SET_RECIPES,
-            payload: {
-              ...recipes,
-              [recipesType]: result,
-            },
-          });
+          dispatch(setRecipesAction(recipesType, true, result));
         })
         .catch((err) => console.log(err));
     }

@@ -4,7 +4,8 @@ import { LightTheme } from "../constants/Design";
 const initialState = {
   recipes: {
     searchRecipes: [],
-    categoryRecipes: []
+    categoryRecipes: [],
+    favorites: [],
   },
   favorites: [],
   cart: {},
@@ -22,7 +23,10 @@ export default function (state = initialState, action) {
     case Action.SET_RECIPES:
       return {
         ...state,
-        recipes: action.payload
+        recipes: {
+          ...state.recipes,
+          ...action.payload,
+        }
       }
     case Action.SET_RECIPE:
       return {

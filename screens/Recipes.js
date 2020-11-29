@@ -13,7 +13,8 @@ function Recipes({ recipes, navigation, ...props }) {
   const { colors } = useTheme();
   const params = props.route.params;
   const [loaderVisible, setLoaderFlag] = useState(false);
-  const recipesData = recipes[params.type];
+  const recipesData = recipes[params.type].result;
+  const isRecipesReady = recipes[params.type].isReady;
 
   const renderRecipes = ({ item }) => (
     <Recipe
@@ -41,10 +42,10 @@ function Recipes({ recipes, navigation, ...props }) {
   }, [])
 
   useEffect(() => {
-    if (recipesData.length && loaderVisible) {
+    if (isRecipesReady && loaderVisible) {
       setLoaderFlag(false);
     }
-  }, [recipesData])
+  }, [isRecipesReady])
 
   if (loaderVisible) {
     return <Loader label={'Recipes made with love...'} />
