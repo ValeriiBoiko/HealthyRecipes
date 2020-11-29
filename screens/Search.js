@@ -116,7 +116,7 @@ function Search(props) {
       title: 'Search results',
       config: {
         query: searchQuery,
-        maxReadyTime: readyTime,
+        maxReadyTime: readyTime.current,
         intolerances: activeIntolerances,
         diet: activeDiet,
       },
