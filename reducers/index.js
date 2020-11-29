@@ -1,11 +1,20 @@
-import Action from "../constants/Action";
+import Action, { State } from "../constants/Action";
 import { LightTheme } from "../constants/Design";
 
 const initialState = {
   recipes: {
-    searchRecipes: [],
-    categoryRecipes: [],
-    favorites: [],
+    searchRecipes: {
+      state: State.SUCCESS,
+      result: [],
+    },
+    categoryRecipes: {
+      state: State.SUCCESS,
+      result: [],
+    },
+    favorites: {
+      state: State.SUCCESS,
+      result: [],
+    },
   },
   favorites: [],
   cart: {},

@@ -1,4 +1,4 @@
-import Action from '../constants/Action';
+import Action, {State} from '../constants/Action';
 import {
   addRecipes,
   addToCart,
@@ -21,78 +21,83 @@ describe('test actions', () => {
     [
       'cart',
       {
-        cart: [
-          {id: 0, title: 'bar'},
-          {id: 1, title: 'foo'},
-        ],
+        cart: {
+          state: State.SUCCESS,
+          result: [
+            {id: 0, title: 'bar'},
+            {id: 1, title: 'foo'},
+          ],
+        },
       },
     ],
     [
       'favorites',
       {
-        cart: [
-          {
-            id: 0,
-            title: 'bar',
-          },
-        ],
-        favorites: [
-          {
-            id: 1,
-            title: 'foo',
-          },
-        ],
+        favorites: {
+          state: State.SUCCESS,
+          result: [
+            {
+              id: 1,
+              title: 'foo',
+            },
+          ],
+        },
       },
     ],
   ])(
     'addRecipes action should dispatch SET_RECIPES action with correct payload',
     async (type, payload) => {
       const dispatch = jest.fn();
-      const getState = jest.fn().mockReturnValueOnce({
+      const getState = jest.fn(() => ({
         recipes: {
-          cart: [
-            {
-              id: 0,
-              title: 'bar',
-            },
-          ],
+          favorites: {
+            result: [],
+          },
+          cart: {
+            result: [
+              {
+                id: 0,
+                title: 'bar',
+              },
+            ],
+          },
         },
-      });
+      }));
 
       await addRecipes({number: 1}, type)(dispatch, getState);
 
-      expect(dispatch).toBeCalledWith({
-        type: Action.SET_RECIPES,
-        payload: payload,
-      });
+      expect(dispatch.mock.calls[1][0]).toEqual(
+        expect.objectContaining({
+          type: Action.SET_RECIPES,
+          payload: payload,
+        }),
+      );
     },
   );
 
   it('setRecipes action should replace existing recipes', async () => {
     const dispatch = jest.fn();
-    const getState = jest.fn().mockReturnValueOnce({
+    const getState = jest.fn(() => ({
       recipes: {
-        cart: [
-          {
-            id: 123,
-          },
-        ],
+        cart: {
+          result: [{id: 123}],
+        },
       },
-    });
+    }));
 
     await setRecipes({number: 1}, 'cart')(dispatch, getState);
 
-    expect(dispatch).toBeCalledWith({
-      type: Action.SET_RECIPES,
-      payload: {
-        cart: [
-          {
-            id: 1,
-            title: 'foo',
+    expect(dispatch.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        type: Action.SET_RECIPES,
+        payload: {
+          cart: {
+            state: State.IN_PROGRESS,
+            result: [],
           },
-        ],
-      },
-    });
+        },
+      }),
+    );
   });
 
   it('setRecipe action should replace existing recipe for specified recipes type', async () => {

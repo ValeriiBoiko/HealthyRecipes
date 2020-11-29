@@ -24,7 +24,7 @@ export function getRecipes(config) {
     fetch(url)
       .then(resp => resp.json())
       .then(json => resolve(json.results))
-      .catch(err => reject(err))
+      .catch(err => resolve([]))
   })
 }
 

@@ -1,3 +1,9 @@
+export const State = {
+  FAILED: 'FAILED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  SUCCESS: 'SUCCESS',
+};
+
 export default {
   SET_DIET: "SET_DIET",
   SET_THEME: "SET_THEME",

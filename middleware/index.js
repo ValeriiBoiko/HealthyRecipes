@@ -1,12 +1,14 @@
-import Action from '../constants/Action';
+import Action, {State} from '../constants/Action';
 import {getRecipes, getRecipe, getInstructions} from '../service';
 
-function setRecipesAction(type, isReady, recipes) {
+const { IN_PROGRESS, FAILED, SUCCESS } = State;
+
+function setRecipesAction(type, state, recipes) {
   return {
     type: Action.SET_RECIPES,
     payload: {
       [type]: {
-        isReady: isReady,
+        state: state,
         result: recipes,
       },
     },
@@ -17,35 +19,35 @@ export function addRecipes(config, recipesType) {
   return (dispatch, getState) => {
     const {recipes} = getState();
 
+    dispatch(
+      setRecipesAction(recipesType, IN_PROGRESS, recipes[recipesType].result),
+    );
+
     if (config.number && config.number > 0) {
-      getRecipes(config)
-        .then((result) => {
-          result = recipes[recipesType]
-            ? recipes[recipesType].concat(result)
-            : result;
-          dispatch({
-            type: Action.SET_RECIPES,
-            payload: {
-              ...recipes,
-              [recipesType]: result,
-            },
-          });
-        })
-        .catch((err) => console.log(err));
+      getRecipes(config).then((result) => {
+        const state = !result.length ? FAILED : SUCCESS;
+        if (recipes[recipesType]) {
+          result = recipes[recipesType].result.concat(result);
+        }
+
+        dispatch(setRecipesAction(recipesType, state, result));
+      });
     }
   };
 }
 
 export function setRecipes(config, recipesType) {
   return (dispatch) => {
-    dispatch(setRecipesAction(recipesType, false, []));
+    dispatch(setRecipesAction(recipesType, IN_PROGRESS, []));
 
     if (config.number && config.number > 0) {
-      getRecipes(config)
-        .then((result) => {
-          dispatch(setRecipesAction(recipesType, true, result));
-        })
-        .catch((err) => console.log(err));
+      getRecipes(config).then((result) => {
+        if (result.length) {
+          dispatch(setRecipesAction(recipesType, SUCCESS, result));
+        } else {
+          dispatch(setRecipesAction(recipesType, FAILED, result));
+        }
+      });
     }
   };
 }
