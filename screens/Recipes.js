@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import Loader from '../components/Loader/Loader';
 import Recipe from '../components/Recipe';
 import NavigationHeader from '../components/NavigationHeader';
+import EmptyListMessage from '../components/EmptyListMessage';
 import {setRecipes, addRecipes} from '../middleware';
 import {wp} from '../utils';
 import {State} from '../constants/Action';
@@ -64,6 +65,8 @@ function Recipes({recipes, navigation, ...props}) {
       setLoaderFlag(false);
     } else if (recipeState === State.FAILED && recipesData.length) {
       setShowScrollLoader(false);
+    } else if (recipeState === State.FAILED && !recipesData.length) {
+      setShowScrollLoader(false);
     }
   }, [recipeState]);
 
@@ -74,13 +77,25 @@ function Recipes({recipes, navigation, ...props}) {
   return (
     <View style={{flexDirection: 'column-reverse', flex: 1}}>
       <FlatList
-        contentContainerStyle={styles.list}
+        contentContainerStyle={[
+          styles.list,
+          {flex: !recipesData.length ? 1 : null},
+        ]}
         data={recipesData}
         renderItem={renderRecipes}
         keyExtractor={(item) => item.id}
         numColumns={2}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.75}
+        ListEmptyComponent={
+          <EmptyListMessage
+            style={{
+              flex: 1,
+            }}
+            iconName={'food'}
+            message={'No recipes found :( Try to change your seacrh params'}
+          />
+        }
         ListFooterComponent={
           showScrollLoader ? (
             <View style={styles.loaderContainer}>
