@@ -149,7 +149,7 @@ describe('test actions', () => {
     ],
   ])(
     'removeRecipeFromCart action should delete the recipe from cart by id',
-    async (id, payload) => {
+    (id, payload) => {
       const dispatch = jest.fn();
       const getState = jest.fn().mockReturnValueOnce({
         cart: {
@@ -157,7 +157,7 @@ describe('test actions', () => {
         },
       });
 
-      await removeRecipeFromCart(id)(dispatch, getState);
+      removeRecipeFromCart(id)(dispatch, getState);
 
       expect(dispatch).toBeCalledWith({
         type: Action.UPDATE_CART,
@@ -167,11 +167,11 @@ describe('test actions', () => {
   );
 
   it.each([
-    [{id: 123}, {id: 0}, {123: {ingredients: [{id: 1}]}}],
-    [{id: 123}, {id: 1}, {123: {ingredients: [{id: 0}]}}],
+    [123, 0, {123: {ingredients: [{id: 1}]}}],
+    [123, 1, {123: {ingredients: [{id: 0}]}}],
   ])(
     'removeFromCart action should delete ingredient from cart',
-    async (recipe, ingredient, payload) => {
+    (recipe, ingredient, payload) => {
       const dispatch = jest.fn();
       const getState = jest.fn().mockReturnValueOnce({
         cart: {
@@ -179,7 +179,7 @@ describe('test actions', () => {
         },
       });
 
-      await removeFromCart(recipe, ingredient)(dispatch, getState);
+      removeFromCart(recipe, ingredient)(dispatch, getState);
 
       expect(dispatch).toBeCalledWith({
         type: Action.UPDATE_CART,
@@ -188,7 +188,7 @@ describe('test actions', () => {
     },
   );
 
-  it('removeFromCart action should delete recipe if the last ingredient is deleted', async () => {
+  it('removeFromCart action should delete recipe if the last ingredient is deleted', () => {
     const dispatch = jest.fn();
     const getState = jest.fn().mockReturnValueOnce({
       cart: {
@@ -196,7 +196,7 @@ describe('test actions', () => {
       },
     });
 
-    await removeFromCart({id: 123}, {id: 0})(dispatch, getState);
+    removeFromCart(123, 0)(dispatch, getState);
 
     expect(dispatch).toBeCalledWith({
       type: Action.UPDATE_CART,
@@ -204,7 +204,7 @@ describe('test actions', () => {
     });
   });
 
-  it('addToCart action should add new recipe and ingredient if there is no recipe in the cart', async () => {
+  it('addToCart action should add new recipe and ingredient if there is no recipe in the cart', () => {
     const recipe = {
       id: 123,
       image: 'image://path',
@@ -213,7 +213,7 @@ describe('test actions', () => {
     const dispatch = jest.fn();
     const getState = jest.fn().mockReturnValueOnce({cart: {}});
 
-    await addToCart(recipe, {id: 0})(dispatch, getState);
+    addToCart(recipe, {id: 0})(dispatch, getState);
 
     expect(dispatch).toBeCalledWith({
       type: Action.UPDATE_CART,
@@ -226,7 +226,7 @@ describe('test actions', () => {
     });
   });
 
-  it('addToCart action should add ingredient to existing recipe in the cart', async () => {
+  it('addToCart action should add ingredient to existing recipe in the cart', () => {
     const recipe = {
       id: 123,
       image: 'image://path',
@@ -240,7 +240,7 @@ describe('test actions', () => {
       },
     });
 
-    await addToCart(recipe, {id: 1})(dispatch, getState);
+    addToCart(recipe, {id: 1})(dispatch, getState);
 
     expect(dispatch).toBeCalledWith({
       type: Action.UPDATE_CART,
@@ -259,11 +259,11 @@ describe('test actions', () => {
     [321, [{id: 123}], [{id: 123}, {id: 321}]],
   ])(
     'removeFromFavorite action should delete recipe from favorites',
-    async (id, payload, init = [{id: 123}]) => {
+    (id, payload, init = [{id: 123}]) => {
       const dispatch = jest.fn();
       const getState = jest.fn().mockReturnValueOnce({favorites: init});
 
-      await removeFromFavorite(id)(dispatch, getState);
+      removeFromFavorite(id)(dispatch, getState);
 
       expect(dispatch).toBeCalledWith({
         type: Action.SET_FAVORITES,
@@ -277,11 +277,11 @@ describe('test actions', () => {
     [{id: 321}, [{id: 123}, {id: 321}], [{id: 123}]],
   ])(
     'addToFavorite action should add recipe to favorites',
-    async (recipe, payload, init = []) => {
+    (recipe, payload, init = []) => {
       const dispatch = jest.fn();
       const getState = jest.fn().mockReturnValueOnce({favorites: init});
 
-      await addToFavorite(recipe)(dispatch, getState);
+      addToFavorite(recipe)(dispatch, getState);
 
       expect(dispatch).toBeCalledWith({
         type: Action.SET_FAVORITES,

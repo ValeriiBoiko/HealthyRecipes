@@ -132,18 +132,18 @@ export function addToCart(recipe, ingredient) {
   };
 }
 
-export function removeFromCart(recipe, ingredient) {
+export function removeFromCart(recipeId, ingredientId) {
   return (dispatch, getState) => {
     const {cart} = getState();
     const updatedCart = {...cart};
-    const cartRecipe = updatedCart[recipe.id];
+    const cartRecipe = updatedCart[recipeId];
 
     cartRecipe.ingredients = cartRecipe.ingredients.filter(
-      (item) => item.id !== ingredient.id,
+      (item) => item.id !== ingredientId,
     );
 
     if (!cartRecipe.ingredients.length) {
-      delete updatedCart[recipe.id];
+      delete updatedCart[recipeId];
     }
 
     dispatch({
