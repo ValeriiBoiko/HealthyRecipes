@@ -15,19 +15,17 @@ function IngredientList(props) {
   const selectedItems = ingredientsInCart.map((item) => item.id);
 
   function onPress(id, title) {
-    const index = selectedItems.findIndex((item) => id === item);
-    const ingredient = {id, title};
+    const isAdded = selectedItems.indexOf(id) > -1;
 
-    if (index > -1) {
-      props.removeFromCart(props.recipe.id, ingredient.id);
+    if (isAdded) {
+      props.removeFromCart(props.recipe.id, id);
     } else {
-      props.addToCart(props.recipe.id, ingredient.id);
+      props.addToCart(props.recipe, {id, title});
     }
   }
 
   const ingredients = props.ingredients.map((item) => {
-    const isAdded =
-      selectedItems.findIndex((current) => current === item.id) > -1;
+    const isAdded = selectedItems.indexOf(item.id) > -1;
 
     const icon = isAdded ? (
       <View style={[styles.button, styles.minusButton]}>
