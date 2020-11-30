@@ -65,7 +65,7 @@ function Recipes({recipes, navigation, ...props}) {
       setLoaderFlag(false);
     } else if (recipeState === State.FAILED && recipesData.length) {
       setShowScrollLoader(false);
-    } else if (recipeState === State.FAILED && !recipesData.length) {
+    } else if (!recipesData.length) {
       setShowScrollLoader(false);
     }
   }, [recipeState]);
@@ -93,7 +93,7 @@ function Recipes({recipes, navigation, ...props}) {
               flex: 1,
             }}
             iconName={'food'}
-            message={'No recipes found :( Try to change your seacrh params'}
+            message={'No recipes found :( Try to change your search params'}
           />
         }
         ListFooterComponent={
