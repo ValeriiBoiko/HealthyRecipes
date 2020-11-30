@@ -110,7 +110,7 @@ describe('test actions', () => {
       expect.objectContaining({
         type: Action.SET_RECIPE,
         payload: {
-          state: 'LOADING',
+          state: State.IN_PROGRESS,
         },
       }),
     );
@@ -121,7 +121,7 @@ describe('test actions', () => {
             id: 1,
             title: 'foo',
             instructions: [],
-            state: 'READY',
+            state: State.SUCCESS,
           },
         },
         type: Action.SET_RECIPE,

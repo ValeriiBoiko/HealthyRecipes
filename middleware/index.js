@@ -1,7 +1,7 @@
 import Action, {State} from '../constants/Action';
 import {getRecipes, getRecipe, getInstructions} from '../service';
 
-const { IN_PROGRESS, FAILED, SUCCESS } = State;
+const {IN_PROGRESS, FAILED, SUCCESS} = State;
 
 function setRecipesAction(type, state, recipes) {
   return {
@@ -10,6 +10,19 @@ function setRecipesAction(type, state, recipes) {
       [type]: {
         state: state,
         result: recipes,
+      },
+    },
+  };
+}
+
+function setRecipeAction(type, recipe, instructions) {
+  return {
+    type: Action.SET_RECIPE,
+    payload: {
+      [type]: {
+        ...recipe,
+        instructions: instructions,
+        state: State.SUCCESS,
       },
     },
   };
@@ -60,7 +73,7 @@ export function setRecipe(id = -1, type) {
   return (dispatch) => {
     dispatch({
       type: Action.SET_RECIPE,
-      payload: {state: 'LOADING'},
+      payload: {state: State.IN_PROGRESS},
     });
 
     const recipe = getRecipe(id);
@@ -68,16 +81,7 @@ export function setRecipe(id = -1, type) {
 
     Promise.all([recipe, instructions])
       .then((values) => {
-        dispatch({
-          type: Action.SET_RECIPE,
-          payload: {
-            [type]: {
-              ...values[0],
-              instructions: values[1],
-              state: 'READY',
-            },
-          },
-        });
+        dispatch(setRecipeAction(type, values[0], values[1]));
       })
       .catch((err) => console.log(err));
   };
@@ -111,19 +115,15 @@ export function addToCart(recipe, ingredient) {
   return (dispatch, getState) => {
     const {cart} = getState();
     const updatedCart = {...cart};
+    let recipeInCart = updatedCart[recipe.id] || {
+      id: recipe.id,
+      image: recipe.image,
+      title: recipe.title,
+      ingredients: [],
+    };
+    recipeInCart.ingredients.push(ingredient);
 
-    if (!updatedCart[recipe.id]) {
-      updatedCart[recipe.id] = {
-        id: recipe.id,
-        image: recipe.image,
-        title: recipe.title,
-        ingredients: [ingredient],
-      };
-    } else {
-      updatedCart[recipe.id].ingredients = updatedCart[
-        recipe.id
-      ].ingredients.concat([ingredient]);
-    }
+    updatedCart[recipe.id] = recipeInCart;
 
     dispatch({
       type: Action.UPDATE_CART,
